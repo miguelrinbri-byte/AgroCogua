@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Agrocogua — Veterinaria & Almacén Agropecuario</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --verde:     #2d5a27;
+      --verde-med: #4a7c3f;
+      --verde-cl:  #7fb069;
+      --tierra:    #8b5e3c;
+      --dorado:    #c9952a;
+      --crema:     #f5f0e8;
+      --blanco:    #fdfaf5;
+      --oscuro:    #1a2e16;
+      --gris:      #6b7280;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      background: var(--blanco);
+      color: var(--oscuro);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(26,46,22,0.95);
+      backdrop-filter: blur(10px);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5%;
+      height: 68px;
+      border-bottom: 2px solid var(--dorado);
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem; font-weight: 900;
+      color: var(--crema);
+      letter-spacing: 1px;
+    }
+    .nav-logo span { color: var(--dorado); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--crema); text-decoration: none;
+      font-size: .85rem; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      opacity: .8; transition: opacity .2s, color .2s;
+    }
+    .nav-links a:hover { opacity: 1; color: var(--dorado); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      background:
+        linear-gradient(to bottom, rgba(26,46,22,.72) 0%, rgba(45,90,39,.55) 60%, rgba(245,240,232,.0) 100%),
+        url('https://images.unsplash.com/photo-1500595046743-cd271d694d30?w=1600&q=80') center/cover no-repeat;
+      display: flex; flex-direction: column;
+      align-items: flex-start; justify-content: center;
+      padding: 0 8%;
+      position: relative;
+    }
+    .hero::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0; height: 120px;
+      background: linear-gradient(to top, var(--blanco), transparent);
+    }
+    .hero-tag {
+      background: var(--dorado);
+      color: var(--oscuro);
+      font-size: .7rem; font-weight: 700;
+      letter-spacing: 3px; text-transform: uppercase;
+      padding: .4rem 1rem; border-radius: 2px;
+      margin-bottom: 1.4rem;
+      display: inline-block;
+      animation: fadeUp .8s ease both;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 7vw, 6rem);
+      font-weight: 900; line-height: 1.05;
+      color: #fff; max-width: 780px;
+      animation: fadeUp .9s ease .1s both;
+    }
+    .hero h1 em { color: var(--verde-cl); font-style: italic; }
+    .hero p {
+      color: rgba(255,255,255,.85);
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      font-weight: 300; max-width: 520px;
+      margin: 1.4rem 0 2.2rem;
+      line-height: 1.7;
+      animation: fadeUp 1s ease .2s both;
+    }
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; animation: fadeUp 1s ease .3s both; }
+    .btn {
+      padding: .9rem 2rem; border-radius: 3px;
+      font-weight: 700; font-size: .9rem;
+      letter-spacing: 1px; text-transform: uppercase;
+      cursor: pointer; text-decoration: none;
+      transition: transform .2s, box-shadow .2s;
+      display: inline-block;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.25); }
+    .btn-primary { background: var(--dorado); color: var(--oscuro); }
+    .btn-outline { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,.6); }
+    .btn-outline:hover { border-color: #fff; }
+
+    /* ── STRIP ── */
+    .strip {
+      background: var(--verde);
+      color: #fff;
+      display: flex; justify-content: center; flex-wrap: wrap;
+      gap: 0; padding: 0;
+    }
+    .strip-item {
+      display: flex; align-items: center; gap: .8rem;
+      padding: 1.1rem 2.5rem;
+      border-right: 1px solid rgba(255,255,255,.15);
+      font-size: .85rem; font-weight: 700;
+      letter-spacing: .5px;
+    }
+    .strip-item:last-child { border-right: none; }
+    .strip-item .icon { font-size: 1.4rem; }
+
+    /* ── SECTION SHARED ── */
+    section { padding: 90px 8%; }
+    .section-label {
+      color: var(--dorado); font-size: .7rem;
+      font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+      margin-bottom: .7rem;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 900; line-height: 1.15;
+      color: var(--oscuro);
+    }
+    .section-title em { color: var(--verde-med); font-style: italic; }
+
+    /* ── ABOUT ── */
+    .about {
+      background: var(--crema);
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: center;
+    }
+    .about-img-wrap {
+      position: relative;
+    }
+    .about-img {
+      width: 100%; border-radius: 4px;
+      object-fit: cover; height: 480px;
+      box-shadow: 16px 16px 0 var(--verde-cl);
+    }
+    .about-badge {
+      position: absolute; bottom: -20px; right: -20px;
+      background: var(--verde);
+      color: #fff; border-radius: 50%;
+      width: 130px; height: 130px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: .5rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,.2);
+    }
+    .about-badge .num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem; font-weight: 900; line-height: 1;
+      color: var(--dorado);
+    }
+    .about-badge .txt { font-size: .6rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; opacity: .85; }
+    .about-text p { color: #4b5563; line-height: 1.8; margin: 1.2rem 0; font-size: 1.05rem; }
+    .about-pills { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1.5rem; }
+    .pill {
+      background: var(--verde); color: #fff;
+      padding: .4rem 1rem; border-radius: 99px;
+      font-size: .78rem; font-weight: 700;
+    }
+
+    /* ── SERVICIOS ── */
+    .servicios { background: var(--blanco); }
+    .servicios-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem; margin-top: 3rem;
+    }
+    .card {
+      border: 1.5px solid #e5e7eb; border-radius: 6px;
+      padding: 2rem 1.8rem;
+      transition: transform .3s, box-shadow .3s, border-color .3s;
+      background: #fff; position: relative; overflow: hidden;
+    }
+    .card::before {
+      content: ''; position: absolute;
+      top: 0; left: 0; right: 0; height: 4px;
+      background: var(--verde-cl);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform .35s ease;
+    }
+    .card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,.1); border-color: var(--verde-cl); }
+    .card:hover::before { transform: scaleX(1); }
+    .card-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+    .card h3 { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; margin-bottom: .6rem; }
+    .card p { color: var(--gris); font-size: .93rem; line-height: 1.7; }
+
+    /* ── HORARIOS ── */
+    .horarios {
+      background: var(--oscuro);
+      color: #fff;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 60px; align-items: center;
+    }
+    .horarios .section-title { color: #fff; }
+    .horarios .section-label { color: var(--verde-cl); }
+    .horarios p { color: rgba(255,255,255,.7); line-height: 1.7; margin: 1rem 0 2rem; }
+    .schedule { display: flex; flex-direction: column; gap: .6rem; }
+    .sched-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1rem 1.4rem;
+      background: rgba(255,255,255,.06);
+      border-radius: 4px; border-left: 3px solid var(--verde-cl);
+    }
+    .sched-day { font-weight: 700; font-size: .9rem; letter-spacing: .5px; }
+    .sched-time { color: var(--dorado); font-size: .85rem; font-weight: 700; text-align: right; }
+
+    /* ── UBICACIÓN ── */
+    .ubicacion { background: var(--crema); text-align: center; }
+    .ubicacion .section-title { margin-bottom: .5rem; }
+    .ubicacion > p { color: var(--gris); margin: .8rem auto 2.5rem; max-width: 520px; line-height: 1.7; }
+    .map-wrap {
+      border-radius: 8px; overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0,0,0,.12);
+      border: 3px solid var(--verde);
+      max-width: 800px; margin: 0 auto;
+    }
+    .map-wrap iframe { width: 100%; height: 400px; border: none; display: block; }
+    .contact-info {
+      display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap;
+      margin-top: 2.5rem;
+    }
+    .contact-item { display: flex; align-items: center; gap: .7rem; }
+    .contact-item .ci-icon { font-size: 1.6rem; }
+    .contact-item div p { font-weight: 700; font-size: .9rem; }
+    .contact-item div small { color: var(--gris); font-size: .82rem; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--oscuro);
+      color: rgba(255,255,255,.6);
+      text-align: center;
+      padding: 2.5rem 8%;
+      font-size: .85rem;
+    }
+    footer strong { color: var(--dorado); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 0 4%; }
+      .nav-links { display: none; }
+      .about { grid-template-columns: 1fr; gap: 50px; padding: 60px 5%; }
+      .horarios { grid-template-columns: 1fr; gap: 40px; padding: 60px 5%; }
+      .strip-item { padding: .9rem 1.2rem; font-size: .78rem; }
+      section { padding: 60px 5%; }
+      .about-badge { width: 100px; height: 100px; bottom: -15px; right: -10px; }
+      .about-badge .num { font-size: 1.7rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Agro<span>cogua</span></div>
+  <ul class="nav-links">
+    <li><a href="#nosotros">Nosotros</a></li>
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#horarios">Horarios</a></li>
+    <li><a href="#ubicacion">Ubicación</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <span class="hero-tag">Para los campesinos de Colombia 🌿</span>
+  <h1>El campo merece<br/><em>lo mejor.</em></h1>
+  <p>Almacén agropecuario y atención veterinaria abierta al público. Años de confianza, variedad sin igual y el precio justo que el campo se merece.</p>
+  <div class="hero-btns">
+    <a href="#servicios" class="btn btn-primary">Ver Servicios</a>
+    <a href="#ubicacion" class="btn btn-outline">¿Cómo llegar?</a>
+  </div>
+</section>
+
+<!-- STRIP -->
+<div class="strip">
+  <div class="strip-item"><span class="icon">📍</span> Calle 3 # 4-38, Cogua</div>
+  <div class="strip-item"><span class="icon">🐄</span> Animales domésticos y de granja</div>
+  <div class="strip-item"><span class="icon">💊</span> Medicamentos veterinarios</div>
+  <div class="strip-item"><span class="icon">🌱</span> Semillas & Agro</div>
+  <div class="strip-item"><span class="icon">📅</span> Lunes a domingo</div>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="nosotros">
+  <div class="about-img-wrap">
+    <img class="about-img" src="https://images.unsplash.com/photo-1516467508483-a7212febe31a?w=800&q=80" alt="Almacén agropecuario Agrocogua"/>
+    <div class="about-badge">
+      <span class="num">+25</span>
+      <span class="txt">Años sirviendo al campo</span>
+    </div>
+  </div>
+  <div class="about-text">
+    <p class="section-label">Nuestra Historia</p>
+    <h2 class="section-title">La veterinaria de<br/><em>confianza del campesino</em></h2>
+    <p>Agrocogua es más que un almacén — somos parte de la historia del campo en Colombia. Por décadas hemos acompañado a agricultores, ganaderos y familias campesinas con los productos, los consejos y el trato que se merecen.</p>
+
+    <div class="about-pills">
+      <span class="pill">✅ Precios justos</span>
+      <span class="pill">✅ Atención personalizada</span>
+
+    </div>
+  </div>
+</section>
+
+<!-- SERVICIOS -->
+<section class="servicios" id="servicios">
+  <p class="section-label">Lo que ofrecemos</p>
+  <h2 class="section-title">Todo lo que el campo<br/><em>y sus animales necesitan</em></h2>
+  <div class="servicios-grid">
+    <div class="card">
+      <div class="card-icon">🩺</div>
+      <h3>Atención Veterinaria</h3>
+      <p>Servicio veterinario profesional para tus animales, con diagnóstico, tratamiento y seguimiento. Abiertos todos los días de la semana.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">💊</div>
+      <h3>Medicamentos</h3>
+      <p>Amplio inventario de medicamentos veterinarios para animales domésticos y de granja.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🌾</div>
+      <h3>Alimentos para Animales</h3>
+      <p>Concentrados, suplementos y alimentos balanceados para ganado, aves, perros, gatos y todo tipo de animales.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🌱</div>
+      <h3>Semillas Agrícolas</h3>
+      <p>Vendemos semillas para tus cultivos y necesidades del campo.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">🛒</div>
+      <h3>Insumos Agropecuarios</h3>
+      <p>Accesorios, herramientas, implementos y todo lo que necesitas para el trabajo del campo, la granja y el hogar rural.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HORARIOS -->
+<section class="horarios" id="horarios">
+  <div>
+    <p class="section-label">Estamos para ti</p>
+    <h2 class="section-title">Abiertos<br/><em>toda la semana</em></h2>
+    <p>Sabemos que el campo no descansa. Por eso abrimos todos los días, incluidos domingos, para que siempre encuentres lo que necesitas cuando lo necesitas.</p>
+    <a href="#ubicacion" class="btn btn-primary">Ver cómo llegar</a>
+  </div>
+  <div class="schedule">
+    <div class="sched-row">
+      <span class="sched-day">🗓️ Lunes a Viernes</span>
+      <span class="sched-time">8:00 am – 12:00 m<br/>2:00 pm – 6:00 pm</span>
+    </div>
+    <div class="sched-row">
+      <span class="sched-day">🗓️ Sábados</span>
+      <span class="sched-time">8:00 am – 3:00 pm</span>
+    </div>
+    <div class="sched-row">
+      <span class="sched-day">🗓️ Domingos</span>
+      <span class="sched-time">8:00 am – 1:00 pm</span>
+    </div>
+  </div>
+</section>
+
+<!-- UBICACIÓN -->
+<section class="ubicacion" id="ubicacion">
+  <p class="section-label">Encuéntranos</p>
+  <h2 class="section-title">Estamos en el <em>corazón de Cogua</em></h2>
+  <p>Visítanos en nuestra tienda. Llevamos años en el mismo lugar porque el campo siempre sabe dónde encontrarnos.</p>
+  <div class="map-wrap">
+    <iframe
+      src="https://maps.google.com/maps?q=Calle+3+%234-38,+Cogua,+Cundinamarca,+Colombia&t=&z=17&ie=UTF8&iwloc=&output=embed"
+      allowfullscreen loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
+  </div>
+  <div class="contact-info">
+    <div class="contact-item">
+      <span class="ci-icon">📍</span>
+      <div>
+        <p>Dirección</p>
+        <small><a href="https://maps.google.com/?q=Calle+3+%234-38,+Cogua,+Cundinamarca" target="_blank" style="color:var(--verde);font-weight:700;text-decoration:none;">Calle 3 # 4-38, Cogua, Cundinamarca</a></small>
+      </div>
+    </div>
+    <div class="contact-item">
+      <span class="ci-icon">🕗</span>
+      <div>
+        <p>Horario</p>
+        <small>Lunes a domingo (<a href="#horarios" style="color:var(--verde);font-weight:700;text-decoration:none;">ver horarios</a>)</small>
+      </div>
+    </div>
+    <div class="contact-item">
+      <span class="ci-icon">📱</span>
+      <div>
+        <p>Contáctanos</p>
+        <small><a href="https://wa.me/573173838141" target="_blank" style="color:var(--verde);font-weight:700;text-decoration:none;">317 383 8141 · WhatsApp</a></small>
+      </div>
+    </div>
+    <div class="contact-item">
+      <span class="ci-icon">🐾</span>
+      <div>
+        <p>Atención</p>
+        <small>Veterinaria · Agropecuaria · Mascotas</small>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 <strong>Agrocogua</strong> — Veterinaria & Almacén Agropecuario · Cogua, Cundinamarca 🌿</p>
+  <p style="margin-top:.5rem;">Orgullosamente al servicio del campesino colombiano.</p>
+</footer>
+
+<!-- WHATSAPP FLOTANTE -->
+<a href="https://wa.me/573173838141" target="_blank" class="whatsapp-float" title="Escríbenos al WhatsApp">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="#fff">
+    <path d="M16 0C7.163 0 0 7.163 0 16c0 2.822.736 5.472 2.027 7.772L0 32l8.437-2.01A15.93 15.93 0 0 0 16 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.333a13.27 13.27 0 0 1-6.77-1.853l-.486-.29-5.01 1.194 1.234-4.883-.317-.502A13.267 13.267 0 0 1 2.667 16C2.667 8.636 8.636 2.667 16 2.667S29.333 8.636 29.333 16 23.364 29.333 16 29.333zm7.27-9.862c-.398-.199-2.353-1.16-2.718-1.292-.365-.133-.63-.199-.896.199-.265.398-1.028 1.292-1.26 1.558-.232.265-.465.298-.863.1-.398-.199-1.681-.62-3.202-1.977-1.183-1.056-1.982-2.36-2.214-2.758-.232-.398-.025-.613.174-.811.179-.178.398-.465.597-.698.199-.232.265-.398.398-.664.133-.265.066-.498-.033-.697-.1-.199-.896-2.16-1.228-2.958-.323-.776-.651-.671-.896-.683l-.764-.013c-.265 0-.697.1-1.062.498-.365.398-1.394 1.36-1.394 3.318s1.427 3.85 1.626 4.116c.199.265 2.808 4.286 6.803 6.012.951.41 1.693.655 2.271.839.954.303 1.823.26 2.51.158.765-.114 2.353-.962 2.685-1.89.332-.929.332-1.724.232-1.89-.099-.165-.365-.265-.763-.464z"/>
+  </svg>
+  <span>¿Necesitas ayuda?</span>
+</a>
+
+<style>
+.whatsapp-float {
+  position: fixed;
+  bottom: 28px; right: 28px;
+  z-index: 999;
+  background: #25d366;
+  color: #fff;
+  display: flex; align-items: center; gap: .7rem;
+  padding: .85rem 1.4rem .85rem 1.1rem;
+  border-radius: 99px;
+  text-decoration: none;
+  font-family: 'Lato', sans-serif;
+  font-weight: 700; font-size: .9rem;
+  box-shadow: 0 6px 24px rgba(37,211,102,.45);
+  transition: transform .25s, box-shadow .25s;
+  animation: waPulse 2.5s infinite;
+}
+.whatsapp-float:hover {
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: 0 10px 32px rgba(37,211,102,.6);
+  animation: none;
+}
+@keyframes waPulse {
+  0%, 100% { box-shadow: 0 6px 24px rgba(37,211,102,.45); }
+  50%       { box-shadow: 0 6px 36px rgba(37,211,102,.75); }
+}
+</style>
+
+</body>
+</html>
